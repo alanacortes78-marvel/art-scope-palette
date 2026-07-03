@@ -9,7 +9,7 @@ function Index() {
   // El proyecto entregable es un sitio 100% estático bajo /artscope/
   // (HTML + CSS + JS + JSON). Compatible con GitHub Pages.
   useEffect(() => {
-    window.location.replace("/artscope/");
+    window.location.replace("/artscope/index.html");
   }, []);
 
   return (
