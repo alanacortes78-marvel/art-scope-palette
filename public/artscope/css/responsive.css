@@ -7,7 +7,7 @@
   .hero__art { aspect-ratio: 16 / 11; max-height: 460px; }
   .about-grid { grid-template-columns: 1fr 1fr; }
   .pf-cta { grid-template-columns: 1fr; padding: 2rem; }
-  .contact { grid-template-columns: 1fr; }
+  .obra-detail { grid-template-columns: 1fr; gap: 1.5rem; }
   .footer__grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -47,6 +47,8 @@
   .footer__bottom { flex-direction: column; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
   .hero__badge { display: none; }
+  .obra-artist { grid-template-columns: 1fr; text-align: center; }
+  .obra-artist__social { justify-content: center; }
 }
 
 /* Impresión */

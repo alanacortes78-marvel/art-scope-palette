@@ -81,7 +81,7 @@ function render(artworks) {
   bindCardEvents(grid);
 }
 
-function cardHTML(art) {
+export function cardHTML(art) {
   const fav = state.favs.has(art.id);
   const favCount = art.favorites + (fav ? 1 : 0);
   const date = new Date(art.date).toLocaleDateString("es-ES", {
@@ -96,6 +96,10 @@ function cardHTML(art) {
             <div class="card__cat">${art.category}</div>
           </div>
           <div class="card__actions">
+            <a href="obra.html?id=${art.id}" class="icon-btn"
+              aria-label="Ver detalle de ${art.title}">
+              ${detailSVG()}
+            </a>
             <button type="button" class="icon-btn ${fav ? "is-fav" : ""}"
               data-action="fav"
               aria-label="${fav ? "Quitar de favoritos" : "Agregar a favoritos"}"
@@ -111,7 +115,7 @@ function cardHTML(art) {
         </div>
       </div>
       <div class="card__body">
-        <h3 class="card__title">${art.title}</h3>
+        <h3 class="card__title"><a href="obra.html?id=${art.id}">${art.title}</a></h3>
         <div class="card__meta">
           <span>${art.author} · ${date}</span>
           <span class="card__favs" aria-label="${favCount} favoritos">
@@ -122,7 +126,7 @@ function cardHTML(art) {
     </article>`;
 }
 
-function bindCardEvents(grid) {
+export function bindCardEvents(grid) {
   grid.querySelectorAll(".card").forEach((card) => {
     const id = card.dataset.id;
     card.querySelector('[data-action="fav"]')?.addEventListener("click", (e) => {
@@ -145,7 +149,7 @@ function bindCardEvents(grid) {
 
     card.querySelector('[data-action="share"]')?.addEventListener("click", async (e) => {
       e.preventDefault();
-      const url = `${location.origin}${location.pathname}#obra-${id}`;
+      const url = `${location.origin}${location.pathname.replace(/index\.html$/, "")}obra.html?id=${id}`;
       const data = { title: "Art Scope", text: "Mira esta obra en Art Scope", url };
       if (navigator.share) {
         try { await navigator.share(data); } catch { /* cancelado */ }
@@ -166,6 +170,11 @@ function heartSVG() {
 function heartSmallSVG() {
   return `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align:-2px">
     <path d="M12 21s-7.5-4.6-9.5-9.1C1 8.7 3.1 5 6.6 5c2 0 3.5 1 5.4 3.2C13.9 6 15.4 5 17.4 5c3.5 0 5.6 3.7 4.1 6.9C19.5 16.4 12 21 12 21z"/>
+  </svg>`;
+}
+function detailSVG() {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
   </svg>`;
 }
 function shareSVG() {

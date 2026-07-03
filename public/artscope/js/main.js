@@ -201,7 +201,7 @@ function renderPortfolioAvatars(artists) {
   if (!list) return;
   list.innerHTML = artists
     .slice(0, 4)
-    .map((a) => `<img src="${a.avatar}" alt="Retrato de ${a.name}" loading="lazy">`)
+    .map((a) => `<a href="artista.html?id=${a.id}" aria-label="Entrar al universo de ${a.name}"><img src="${a.avatar}" alt="Retrato de ${a.name}" loading="lazy"></a>`)
     .join("");
 }
 

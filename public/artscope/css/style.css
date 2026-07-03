@@ -633,15 +633,21 @@ p  { margin: 0 0 1em; color: var(--text-dim); }
   display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center;
 }
 .pf-cta__list { display: flex; gap: -1rem; align-items: center; }
-.pf-cta__list img {
-  width: 68px; height: 68px; border-radius: 50%; object-fit: cover;
-  border: 3px solid var(--bg);
+.pf-cta__list a {
+  display: block;
+  width: 68px; height: 68px;
   margin-left: -14px;
+  transition: transform .2s var(--ease);
 }
-.pf-cta__list img:first-child { margin-left: 0; }
+.pf-cta__list a:first-child { margin-left: 0; }
+.pf-cta__list a:hover { transform: translateY(-3px); z-index: 1; position: relative; }
+.pf-cta__list img {
+  width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+  border: 3px solid var(--bg);
+}
 
 /* ==========================================================================
-   Acerca / Contacto
+   Acerca
    ========================================================================== */
 
 .about-grid {
@@ -665,34 +671,99 @@ p  { margin: 0 0 1em; color: var(--text-dim); }
 .about-card:nth-child(2) .about-card__icon { background: var(--grad-hero); }
 .about-card:nth-child(3) .about-card__icon { background: var(--grad-yellow); color: #1a1200; }
 
-.contact {
-  padding: 2rem;
+/* ==========================================================================
+   Detalle de obra (destino del QR de cada cuadro)
+   ========================================================================== */
+
+.obra-back {
+  display: inline-flex;
+}
+
+.obra-detail {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+.obra-detail__media {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+.obra-detail__media img {
+  width: 100%;
+  height: auto;
+}
+.obra-detail__info h1 {
+  margin-bottom: .3rem;
+}
+.obra-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  align-items: center;
+  color: var(--text-mute);
+  font-size: .88rem;
+  margin-bottom: 1.2rem;
+}
+.obra-detail__meta .card__favs { display: inline-flex; align-items: center; gap: .3rem; }
+.obra-detail__block { margin-top: 1.6rem; }
+.obra-detail__block h3 {
+  font-size: 1.05rem;
+  margin-bottom: .5rem;
+}
+.obra-tools {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.obra-tools li {
+  font-size: .82rem;
+  padding: .4rem .8rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.obra-artist {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.2rem;
+  align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  align-items: center;
 }
-.field {
-  display: flex; flex-direction: column; gap: .35rem;
-  margin-bottom: .8rem;
+.obra-artist__avatar {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bg);
+  box-shadow: var(--shadow-sm);
 }
-.field label { font-size: .8rem; color: var(--text-dim); }
-.field input,
-.field textarea {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: .8rem 1rem;
-  border-radius: 12px;
-  font: inherit;
-  transition: border-color .2s;
+.obra-artist__bio { margin: .4rem 0 0; }
+.obra-artist__social {
+  display: flex;
+  gap: .5rem;
+  margin-top: .9rem;
 }
-.field input:focus,
-.field textarea:focus { outline: 0; border-color: var(--blue); }
-.field textarea { min-height: 110px; resize: vertical; }
+.obra-artist__social a.icon-btn:hover { color: var(--blue); border-color: var(--blue); }
+
+.obra-notfound {
+  padding: calc(var(--nav-h) + 5rem) 0 6rem;
+  text-align: center;
+}
+.obra-notfound h1 { margin-bottom: .6rem; }
+.obra-notfound p { max-width: 46ch; margin: 0 auto 1.6rem; }
 
 /* ==========================================================================
    Footer
