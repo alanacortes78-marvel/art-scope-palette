@@ -192,24 +192,55 @@ document.addEventListener("DOMContentLoaded", async () => {
   initParallax();
   initScrollSpy();
   initYear();
+  initAssetErrorHandling();
 
-  const [artworks, categories, artists, challenges] = await Promise.all([
+  const results = await Promise.all([
     loadJSON("data/artworks.json"),
     loadJSON("data/categories.json"),
     loadJSON("data/artists.json"),
     loadJSON("data/challenges.json"),
   ]);
+  const [rArtworks, rCategories, rArtists, rChallenges] = results;
+  const artworks = rArtworks.data;
+  const categories = rCategories.data;
+  const artists = rArtists.data;
+  const challenges = rChallenges.data;
+
+  const failures = results.filter((r) => !r.ok);
+  if (failures.length) showErrorBanner(failures);
 
   // Guardar en un store simple compartido
   window.ArtScope = { artworks, categories, artists, challenges };
 
-  initGallery({ artworks, categories });
-  initPortfolio({ artists });
-  renderCategories(categories);
-  renderChallenges(challenges);
-  renderPortfolioAvatars(artists);
-  updateHeroStats({ artworks, artists, categories });
+  if (rArtworks.ok && rCategories.ok) {
+    initGallery({ artworks, categories });
+  } else {
+    renderEmptyState(
+      "gallery-grid",
+      "No pudimos cargar la galería. Intenta recargar la página."
+    );
+  }
 
+  if (rArtists.ok) {
+    initPortfolio({ artists });
+    renderPortfolioAvatars(artists);
+  } else {
+    renderEmptyState("artists-grid", "No pudimos cargar a los artistas.");
+  }
+
+  if (rCategories.ok) {
+    renderCategories(categories);
+  } else {
+    renderEmptyState("categories-grid", "No pudimos cargar las categorías.");
+  }
+
+  if (rChallenges.ok) {
+    renderChallenges(challenges);
+  } else {
+    renderEmptyState("challenges-grid", "No pudimos cargar los retos.");
+  }
+
+  updateHeroStats({ artworks, artists, categories });
   initSearch({ artworks, artists, categories });
 });
 
