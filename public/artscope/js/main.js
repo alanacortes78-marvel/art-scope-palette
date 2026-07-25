@@ -19,16 +19,84 @@ export function toast(message) {
   toast._t = setTimeout(() => t.classList.remove("is-show"), 2200);
 }
 
-/** Carga JSON local con manejo de error amistoso */
+/** Carga JSON local con manejo de error amistoso.
+ *  Devuelve { ok, data, error, path } sin lanzar, para no romper la navegación. */
 async function loadJSON(path) {
   try {
     const res = await fetch(path, { cache: "no-cache" });
-    if (!res.ok) throw new Error(res.statusText);
-    return await res.json();
+    if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText || ""}`.trim());
+    const data = await res.json();
+    return { ok: true, data, path };
   } catch (err) {
-    console.error("No se pudo cargar", path, err);
-    return [];
+    console.error(`[Art Scope] No se pudo cargar ${path}:`, err);
+    return { ok: false, data: [], error: err?.message || String(err), path };
   }
+}
+
+/** Banner de error no bloqueante en la parte superior de <main>. */
+function showErrorBanner(failures) {
+  if (!failures.length) return;
+  const main = document.getElementById("main");
+  if (!main) return;
+  const prev = document.getElementById("as-error-banner");
+  if (prev) prev.remove();
+
+  const banner = document.createElement("div");
+  banner.id = "as-error-banner";
+  banner.setAttribute("role", "alert");
+  banner.style.cssText = [
+    "margin:1rem auto", "max-width:1100px", "padding:.9rem 1rem",
+    "border-radius:12px", "background:rgba(255,90,90,.12)",
+    "border:1px solid rgba(255,90,90,.35)", "color:#ffb4b4",
+    "font-size:.9rem", "display:flex", "gap:.75rem",
+    "align-items:flex-start", "justify-content:space-between",
+  ].join(";");
+  const items = failures
+    .map((f) => `<li><code>${f.path}</code> — ${f.error}</li>`)
+    .join("");
+  banner.innerHTML = `
+    <div>
+      <strong>⚠️ No pudimos cargar algunos datos.</strong>
+      <div style="opacity:.85;margin-top:.25rem">
+        La navegación sigue funcionando; solo faltan algunas secciones.
+      </div>
+      <ul style="margin:.5rem 0 0 1rem;padding:0">${items}</ul>
+    </div>
+    <button type="button" aria-label="Cerrar aviso"
+      style="background:transparent;border:0;color:inherit;font-size:1.2rem;cursor:pointer;line-height:1">✕</button>`;
+  banner.querySelector("button").addEventListener("click", () => banner.remove());
+  main.prepend(banner);
+}
+
+/** Sustituye imágenes rotas por el placeholder (obras o avatares). */
+function initAssetErrorHandling() {
+  document.addEventListener(
+    "error",
+    (ev) => {
+      const el = ev.target;
+      if (!(el instanceof HTMLImageElement)) return;
+      if (el.dataset.fallbackApplied === "1") return;
+      el.dataset.fallbackApplied = "1";
+      const isAvatar =
+        el.classList.contains("avatar") ||
+        /avatar|artist/i.test(el.src) ||
+        /avatar|artist/i.test(el.alt);
+      el.src = isAvatar
+        ? "assets/images/placeholder-avatar.svg"
+        : "assets/images/placeholder-obra.svg";
+      console.warn("[Art Scope] Imagen no disponible, usando placeholder:", ev.target?.src);
+    },
+    true
+  );
+}
+
+/** Muestra un estado vacío dentro de un contenedor si su dato falló. */
+function renderEmptyState(elId, message) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = `<p style="color:var(--text-mute);text-align:center;padding:2rem;grid-column:1/-1">
+    ${message}
+  </p>`;
 }
 
 /** Anima la aparición al hacer scroll */
@@ -124,24 +192,55 @@ document.addEventListener("DOMContentLoaded", async () => {
   initParallax();
   initScrollSpy();
   initYear();
+  initAssetErrorHandling();
 
-  const [artworks, categories, artists, challenges] = await Promise.all([
+  const results = await Promise.all([
     loadJSON("data/artworks.json"),
     loadJSON("data/categories.json"),
     loadJSON("data/artists.json"),
     loadJSON("data/challenges.json"),
   ]);
+  const [rArtworks, rCategories, rArtists, rChallenges] = results;
+  const artworks = rArtworks.data;
+  const categories = rCategories.data;
+  const artists = rArtists.data;
+  const challenges = rChallenges.data;
+
+  const failures = results.filter((r) => !r.ok);
+  if (failures.length) showErrorBanner(failures);
 
   // Guardar en un store simple compartido
   window.ArtScope = { artworks, categories, artists, challenges };
 
-  initGallery({ artworks, categories });
-  initPortfolio({ artists });
-  renderCategories(categories);
-  renderChallenges(challenges);
-  renderPortfolioAvatars(artists);
-  updateHeroStats({ artworks, artists, categories });
+  if (rArtworks.ok && rCategories.ok) {
+    initGallery({ artworks, categories });
+  } else {
+    renderEmptyState(
+      "gallery-grid",
+      "No pudimos cargar la galería. Intenta recargar la página."
+    );
+  }
 
+  if (rArtists.ok) {
+    initPortfolio({ artists });
+    renderPortfolioAvatars(artists);
+  } else {
+    renderEmptyState("artists-grid", "No pudimos cargar a los artistas.");
+  }
+
+  if (rCategories.ok) {
+    renderCategories(categories);
+  } else {
+    renderEmptyState("categories-grid", "No pudimos cargar las categorías.");
+  }
+
+  if (rChallenges.ok) {
+    renderChallenges(challenges);
+  } else {
+    renderEmptyState("challenges-grid", "No pudimos cargar los retos.");
+  }
+
+  updateHeroStats({ artworks, artists, categories });
   initSearch({ artworks, artists, categories });
 });
 
