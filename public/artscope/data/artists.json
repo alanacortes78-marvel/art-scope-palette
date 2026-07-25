@@ -1,9 +1,42 @@
 [
+ 
   {
+    "id": "alana-cortes",
+    "name": "Alana Cortes (12 años)",
+    "age": 12,
+    "country": "Colombia",
+    "avatar": "assets/images/alana-cortes/perfil.jpeg",
+    "cover": "assets/images/alana-cortes/art1.jpeg",
+    "bio": "Pequeña gran artista, es pintora e ilustradora. Trabaja en mundos de fantasía, superheroes.",
+    "specialties": ["Arte en  oleo","Arte Juvenil", "Dibujo"],
+    "badges": ["🌟 Talento Joven", "🧭 Mentor"],
+    "works": ["art1", "art3", "art2"],
+    "social": {
+      "instagram": "https://instagram.com/alanarecomienda",
+      "website": "#"
+    }
+  },
+
+  {
+    "id": "juana-camila",
+    "name": "Juana Camila (11 años)",
+    "age": 11,
+    "country": "Colombia",
+    "avatar": "assets/images/juana-camila/art3.jpeg",
+    "cover": "assets/images/juana-camila/art2.jpeg",
+    "bio": "Artista juvenil, Dibuja y pinta personajes de peliculas.",
+    "specialties": ["Arte Juvenil", "Dibujo", "Arte Escolar"],
+    "badges": ["🖍️ Explorador", "🌟 Talento Joven"],
+    "works": ["art3"],
+    "social": {
+      "instagram": "https://instagram.com/juanartrc"
+    }
+  },
+   {
     "id": "luna-rivera",
     "name": "Luna Rivera",
     "age": 15,
-    "country": "México",
+    "country": "Colombia",
     "avatar": "assets/images/artist1.jpg",
     "cover": "assets/images/obra2.jpg",
     "bio": "Ilustradora adolescente apasionada por el arte digital y los universos oníricos. Comenzó a dibujar a los 7 años y hoy explora el anime, la fantasía y el color.",
@@ -13,38 +46,6 @@
     "social": {
       "instagram": "https://instagram.com/luna.rivera.art",
       "tiktok": "https://tiktok.com/@lunarivera.art"
-    }
-  },
-  {
-    "id": "diego-santos",
-    "name": "Diego Santos",
-    "age": 28,
-    "country": "España",
-    "avatar": "assets/images/artist2.jpg",
-    "cover": "assets/images/obra5.jpg",
-    "bio": "Diseñador e ilustrador conceptual. Trabaja en mundos de fantasía, arquitectura imaginaria y storyboards para juegos independientes.",
-    "specialties": ["Ilustración", "Arte Digital", "Diseño"],
-    "badges": ["🏆 Artista del Mes", "🧭 Mentor"],
-    "works": ["obra5", "obra3", "obra8"],
-    "social": {
-      "instagram": "https://instagram.com/diegosantos.illustration",
-      "behance": "https://behance.net/diegosantosart",
-      "website": "https://diegosantos.art"
-    }
-  },
-  {
-    "id": "matias-9",
-    "name": "Matías (9 años)",
-    "age": 9,
-    "country": "Argentina",
-    "avatar": "assets/images/artist3.jpg",
-    "cover": "assets/images/obra4.jpg",
-    "bio": "Pequeño gran artista. Dibuja dinosaurios, cohetes y monstruos amigables desde el kínder. Le gustan los colores brillantes y las historias felices.",
-    "specialties": ["Arte Infantil", "Dibujo", "Arte Escolar"],
-    "badges": ["🖍️ Explorador", "🌈 Colorista"],
-    "works": ["obra4"],
-    "social": {
-      "instagram": "https://instagram.com/matidibuja_familia"
     }
   },
   {
@@ -62,27 +63,6 @@
       "instagram": "https://instagram.com/sofiamendez.art",
       "website": "https://sofiamendez-art.com"
     }
-  },
-  {
-    "id": "juana-camila",
-    "name": "Juana Camila",
-    "avatar": "assets/images/placeholder-avatar.svg",
-    "cover": "assets/images/obra10.jpg",
-    "bio": "Pinta al óleo temas cotidianos —flores, frutas, objetos de todos los días— explorando el color y la textura con espátula y pincel.",
-    "specialties": ["Pintura", "Óleo", "Bodegón"],
-    "badges": ["🖌️ Óleo"],
-    "works": ["obra10", "obra11"],
-    "social": {}
-  },
-  {
-    "id": "alana",
-    "name": "Alana",
-    "avatar": "assets/images/placeholder-avatar.svg",
-    "cover": "assets/images/placeholder-obra.svg",
-    "bio": "¡Esta soy yo! Edita este texto en data/artists.json para contar qué te gusta pintar, hace cuánto empezaste y qué te inspira.",
-    "specialties": ["Pintura"],
-    "badges": ["🌱 Nueva en la exposición"],
-    "works": [],
-    "social": {}
   }
+ 
 ]
